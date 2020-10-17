@@ -6,7 +6,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +20,7 @@ import static java.lang.Integer.parseInt;
 
 
 public class taskManager {
+    static String[][] tasks;
 
     public static void main(String[] args) {
         String[][] tasks = readList();
@@ -35,7 +35,7 @@ public class taskManager {
 
             switch (scan.nextLine()) {
                 case "add":
-                    addToList(tasks);
+                    tasks = addToList(tasks);
                     break;
                 case "remove":
                     removeFromList(tasks);
@@ -61,7 +61,7 @@ public class taskManager {
 
 
 
-    public static String[][] readList() {
+    public static String[][] readList() { // IO exception?
 
         List<String[]> lines = new ArrayList<>();
         String[][] tempTab = new String[0][];
@@ -79,7 +79,7 @@ public class taskManager {
     }
 
 
-    public static void addToList(String[][] tasks) {
+    public static String[][] addToList(String[][] tasks) {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Specify Task Name");  // kontrola String?
@@ -95,9 +95,10 @@ public class taskManager {
         String[] arr = {taskName, taskDate, taskStatus};
         tasks[tasks.length - 1] = arr;
 
+        return tasks;
     }
 
-    public static void removeFromList(String[][] tasks) {
+    public static void removeFromList(String[][] tasks) { //do uproszczenia - zawinięcia razem sprawdzanie danych.
         Scanner scan = new Scanner(System.in);
         System.out.println("Select task number to remove");
         String input = scan.nextLine();
@@ -118,23 +119,23 @@ public class taskManager {
 
     }
 
-    public static void showList(String[][] tasks) {
+    public static void showList(String[][] tempTab) {
 
-        for (int i = 0; i < tasks.length; i++) {
+        for (int i = 0; i < tempTab.length; i++) {
             System.out.print(i + 1 + ".) ");
-            for (int j = 0; j < tasks[i].length; j++) {
-                System.out.print(tasks[i][j]);
+            for (int j = 0; j < tempTab[i].length; j++) {
+                System.out.print(tempTab[i][j]);
             }
             System.out.println();
 
         }
     }
 
-    public static void exit(String[][] tasks) {
+    public static void exit(String[][] tempTab) {
         Path path = Paths.get("tasks.csv");
         String[] lines = new String[tasks.length];
-        for (int i = 0; i < tasks.length; i++) {
-            lines[i] = String.join(",", tasks[i]);
+        for (int i = 0; i < tempTab.length; i++) {
+            lines[i] = String.join(",", tempTab[i]);
         }
         try {
             Files.write(path, Arrays.asList(lines));
