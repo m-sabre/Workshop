@@ -6,7 +6,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -61,7 +60,7 @@ public class taskManager {
         List<String[]> lines = new ArrayList<>();
         String[][] tempTab = new String[0][];
         try {
-            File file = new File("tasks.csv");
+            File file = new File("pl/coderslab/tasks.csv");
             Scanner scan = new Scanner(file);
             while (scan.hasNextLine()) {
                 lines.add(scan.nextLine().split(","));
@@ -122,7 +121,7 @@ public class taskManager {
     }
 
     public static void exit(String[][] tasks) {
-        Path path = Paths.get("tasks.csv");
+        Path path = Paths.get("pl/coderslab/tasks.csv");
         String[] lines = new String[tasks.length];
         for (int i = 0; i<tasks.length; i++){
             lines[i]=String.join(",",tasks[i]);
