@@ -6,6 +6,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +16,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
+
+// generalnie do skończenia komunikacja pomiędzy modułami.
+
 
 public class taskManager {
 
@@ -27,7 +31,8 @@ public class taskManager {
         System.out.println("list");
         System.out.println("exit");
 
-        while (scan.hasNextLine()){
+        do {
+
             switch (scan.nextLine()) {
                 case "add":
                     addToList(tasks);
@@ -45,22 +50,23 @@ public class taskManager {
                     System.out.println("Wrong command, please try again.");
                     break;
             }
-        }
+        } while (!scan.nextLine().equalsIgnoreCase("exit"));
 
         System.out.println(ConsoleColors.BLUE + "Please select an option");
         System.out.println(ConsoleColors.RESET + "add");
         System.out.println("remove");
         System.out.println("list");
         System.out.println("exit");
-
     }
+
+
 
     public static String[][] readList() {
 
         List<String[]> lines = new ArrayList<>();
         String[][] tempTab = new String[0][];
         try {
-            File file = new File("pl/coderslab/tasks.csv");
+            File file = new File("tasks.csv");
             Scanner scan = new Scanner(file);
             while (scan.hasNextLine()) {
                 lines.add(scan.nextLine().split(","));
@@ -75,12 +81,16 @@ public class taskManager {
 
     public static void addToList(String[][] tasks) {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Specify Task Name");
+
+        System.out.println("Specify Task Name");  // kontrola String?
         String taskName = scan.nextLine();
-        System.out.println("Specify task due date");
+
+        System.out.println("Specify task due date"); // kontrola date?
         String taskDate = scan.nextLine();
-        System.out.println("Is this task important: true / false");
+
+        System.out.println("Is this task important: true / false"); // kontrola boolean!
         String taskStatus = scan.nextLine();
+
         tasks = Arrays.copyOf(tasks, tasks.length + 1);
         String[] arr = {taskName, taskDate, taskStatus};
         tasks[tasks.length - 1] = arr;
@@ -121,13 +131,13 @@ public class taskManager {
     }
 
     public static void exit(String[][] tasks) {
-        Path path = Paths.get("pl/coderslab/tasks.csv");
+        Path path = Paths.get("tasks.csv");
         String[] lines = new String[tasks.length];
-        for (int i = 0; i<tasks.length; i++){
-            lines[i]=String.join(",",tasks[i]);
+        for (int i = 0; i < tasks.length; i++) {
+            lines[i] = String.join(",", tasks[i]);
         }
-        try{
-            Files.write(path,Arrays.asList(lines));
+        try {
+            Files.write(path, Arrays.asList(lines));
         } catch (IOException eee) {
             eee.printStackTrace();
         }
