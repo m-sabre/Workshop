@@ -45,6 +45,8 @@ public class taskManager {
                     break;
                 case "exit":
                     exit(tasks);
+                    System.out.println(ConsoleColors.RED + "Goodbye.");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Wrong command, please try again.");
